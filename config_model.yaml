@@ -2,7 +2,7 @@
 GPUs: "0,1"
 
 # Data options
-root: "Project/Shape-Prior-Semi-Seg/"
+root: ""
 dataset: "tn3k"  
 ratio: 2
 

@@ -23,5 +23,5 @@ mlp_D: false
 n_extra_layers: 0
 experiment: "result"
 adam: false
-root: "Project/Shape-Prior-Semi-Seg/"
+root: ""
 expID: 1

@@ -17,7 +17,7 @@ def list_files_in_directory(directory):
             file_list.append(file_path)
     return file_list
 
-directory_path = 'airs/tn3k/test-image/'
+directory_path = 'tn3k/test-image/'
 file_paths = list_files_in_directory(directory_path)
 list = []
 
@@ -27,6 +27,6 @@ for path in file_paths:
     list.append(name)
 
 # Write the formatted paths to a text file
-with open('airs/tn3k/test.txt', 'w') as file:
+with open('data/splits/tn3k/test.txt', 'w') as file:
     for path in list:
         file.write(path + '\n')
