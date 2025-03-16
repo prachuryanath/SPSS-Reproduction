@@ -3,7 +3,7 @@ import torch.nn as nn
 import torchvision.models as models
 import torch.nn.functional as F
 
-from utils.aug_function import FeatureNoiseDecoder, DropOutDecoder
+from semi.code.utils.aug_function import FeatureNoiseDecoder, DropOutDecoder
 
 
 def cat(x1, x2, x3=None, dim=1):

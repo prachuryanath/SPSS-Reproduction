@@ -1,5 +1,5 @@
 import torch
-import models
+import semi.code.models 
 import os
 
 def build_model(args):

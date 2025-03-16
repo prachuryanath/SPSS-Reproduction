@@ -1,7 +1,7 @@
 from torch.utils.data import Dataset
 from torchvision import transforms
 import os
-from utils.mytransforms import *
+from ..utils.mytransforms import *
 import json
 
 
