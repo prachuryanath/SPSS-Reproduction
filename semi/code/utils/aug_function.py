@@ -12,7 +12,7 @@ from torch.distributions.uniform import Uniform
 
 def icnr(x, scale=2, init=nn.init.kaiming_normal_):
     """
-    Checkerboard artifact free sub-pixel convolution
+    Initialize weights to prevent checkerboard artifacts in sub-pixel convolution.
     https://arxiv.org/abs/1707.02937
     """
     ni,nf,h,w = x.shape
@@ -26,7 +26,7 @@ def icnr(x, scale=2, init=nn.init.kaiming_normal_):
 
 class PixelShuffle(nn.Module):
     """
-    Real-Time Single Image and Video Super-Resolution
+    Implements Real-Time Single Image and Video Super-Resolution using Pixel Shuffle.
     https://arxiv.org/abs/1609.05158
     """
     def __init__(self, n_channels, scale):
@@ -53,6 +53,9 @@ def upsample(in_channels, out_channels, upscale, kernel_size=3):
 
 
 class MainDecoder(nn.Module):
+    """
+    Main Decoder that applies upsampling to the input feature maps.
+    """
     def __init__(self, upscale, conv_in_ch, num_classes):
         super(MainDecoder, self).__init__()
         self.upsample = upsample(conv_in_ch, num_classes, upscale=upscale)
@@ -63,6 +66,9 @@ class MainDecoder(nn.Module):
 
 
 class DropOutDecoder(nn.Module):
+    """
+    Decoder with dropout for regularization.
+    """
     def __init__(self, drop_rate=0.3, spatial_dropout=False):
         super(DropOutDecoder, self).__init__()
         self.dropout = nn.Dropout2d(p=drop_rate) if spatial_dropout else nn.Dropout(drop_rate)
@@ -75,6 +81,9 @@ class DropOutDecoder(nn.Module):
 
 
 class FeatureDropDecoder(nn.Module):
+    """
+    Decoder that drops features based on an attention-based thresholding mechanism.
+    """
     def __init__(self, upscale, conv_in_ch, num_classes):
         super(FeatureDropDecoder, self).__init__()
         self.upsample = upsample(conv_in_ch, num_classes, upscale=upscale)
@@ -94,6 +103,9 @@ class FeatureDropDecoder(nn.Module):
 
 
 class FeatureNoiseDecoder(nn.Module):
+    """
+    Decoder that introduces noise in the feature space.
+    """
     def __init__(self, uniform_range=0.3):
         super(FeatureNoiseDecoder, self).__init__()
         # self.upsample = upsample(conv_in_ch, num_classes, upscale=upscale)
@@ -112,7 +124,9 @@ class FeatureNoiseDecoder(nn.Module):
 
 
 def _l2_normalize(d):
-    # Normalizing per batch axis
+    """
+    L2 normalization for the input tensor per batch.
+    """
     d_reshaped = d.view(d.shape[0], -1, *(1 for _ in range(d.dim() - 2)))
     d /= torch.norm(d_reshaped, dim=1, keepdim=True) + 1e-8
     return d
@@ -140,6 +154,9 @@ def get_r_adv(x, decoder, it=1, xi=1e-1, eps=10.0):
 
 
 class VATDecoder(nn.Module):
+    """
+    Virtual Adversarial Training (VAT) decoder for semi-supervised learning.
+    """
     def __init__(self, upscale, conv_in_ch, num_classes, xi=1e-1, eps=10.0, iterations=1):
         super(VATDecoder, self).__init__()
         self.xi = xi
@@ -198,6 +215,9 @@ def guided_cutout(output, upscale, resize, erase=0.4, use_dropout=False):
 
 
 class CutOutDecoder(nn.Module):
+    """
+    Decoder that applies guided cutout regularization to feature maps.
+    """
     def __init__(self, upscale, conv_in_ch, num_classes, drop_rate=0.3, spatial_dropout=True, erase=0.4):
         super(CutOutDecoder, self).__init__()
         self.erase = erase
@@ -242,6 +262,9 @@ class ContextMaskingDecoder(nn.Module):
 
 
 class ObjectMaskingDecoder(nn.Module):
+    """
+    Decoder that masks contextual information in feature maps.
+    """
     def __init__(self, upscale, conv_in_ch, num_classes):
         super(ObjectMaskingDecoder, self).__init__()
         self.upscale = upscale
