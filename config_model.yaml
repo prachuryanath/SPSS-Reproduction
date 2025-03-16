@@ -3,7 +3,7 @@ GPUs: "0,1"
 
 # Data options
 root: "Project/Shape-Prior-Semi-Seg/"
-dataset: "tn3k"  # Options: ["tn3k", "BUSI"]
+dataset: "tn3k"  
 ratio: 2
 
 # Training options
